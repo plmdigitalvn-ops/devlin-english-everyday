@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap&subset=vietnamese" rel="stylesheet">
 <title>Devlin Phu English Everyday</title>
 <style>
 :root{--bg:#f4f6ff;--card:#fff;--tx:#1d2140;--mu:#6b7194;--ac:#5b5bf0;--ac2:#8b5cf6;--acx:#fff;--ok:#12805c;--bad:#c4321f;--bd:#e4e7f5;--warm:#fff4e0;box-sizing:border-box}
@@ -10,7 +11,7 @@
 :root[data-theme="dark"]{--bg:#10121f;--card:#1b1f36;--tx:#eef0ff;--mu:#9aa1c8;--ac:#8c8cff;--ac2:#a78bfa;--acx:#10122a;--ok:#4cd2a0;--bad:#ff8a77;--bd:#2c3253;--warm:#3a2f1c;color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Nunito","Segoe UI",system-ui,-apple-system,sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Roboto","Segoe UI",system-ui,-apple-system,sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 header{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;padding:calc(16px + env(safe-area-inset-top,0px)) 16px 34px;border-radius:0 0 26px 26px}
 .hw{max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:12px}.hb{display:flex;gap:8px;flex-wrap:wrap}
 .logo{font-weight:800;font-size:20px;line-height:1.15}.logo small{display:block;font-weight:600;font-size:12px;opacity:.85;letter-spacing:.5px}
@@ -52,6 +53,18 @@ textarea,.ci{width:100%;font:inherit;padding:12px;border-radius:12px;border:1px 
 .tip{margin-top:8px;padding:8px 10px;border-radius:10px;background:var(--warm);font-size:14px}
 .cin{display:flex;gap:8px;align-items:center}
 .cin .btn{flex:none;min-width:0;padding:12px 16px}
+html{-webkit-text-size-adjust:100%}*{-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font-family:inherit;touch-action:manipulation}
+.btn,.opt,.chip,.tile{min-height:46px}.bm{min-height:40px;min-width:44px}
+input,select,textarea,.ci{font-size:16px}
+.big{font-size:clamp(26px,8.5vw,34px)}.vi{font-size:clamp(20px,6.5vw,24px)}
+.sv>div:first-child{min-width:0;word-break:break-word}
+details.tp{border:1px solid var(--bd);border-radius:14px;background:var(--card);margin-bottom:8px;overflow:hidden}
+details.tp>summary{padding:13px 14px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:8px;align-items:center}
+details.tp>summary::-webkit-details-marker{display:none}
+details.tp>summary::after{content:"▾";color:var(--mu)}details.tp[open]>summary::after{content:"▴"}
+details.tp .sv{padding:8px 14px}
+@media (max-width:420px){main{padding:0 10px}.card{padding:14px;border-radius:16px}header{padding-bottom:30px}.logo{font-size:18px}nav button{font-size:10px;padding:5px 1px}nav button b{font-size:20px}.grid{gap:6px}.tile{padding:11px 10px 14px}.row{gap:6px}.btn{padding:12px 8px;min-width:80px}h2{font-size:17px}}
 </style>
 </head>
 <body>
@@ -104,7 +117,7 @@ var Q=[
 ["I ___ to finish this today.",["have","has","am"],0,"I have to + V = tôi phải làm."]
 ];
 var ALL=[];function rebuild(){ALL=[];var sn={};Object.keys(V).forEach(function(k){V[k].forEach(function(w){var q=w[0].toLowerCase();if(!sn[q]){sn[q]=1;ALL.push(w)}})})}
-var S={sp:{},cw:[],ptr:0,dl:{d:"",w:[]},tr:[],known:{},saved:{},savedG:{},days:{},rem:{on:false,time:"20:00"},last:""};
+var S={lp:{},sp:{},cw:[],ptr:0,dl:{d:"",w:[]},tr:[],known:{},saved:{},savedG:{},days:{},rem:{on:false,time:"20:00"},last:""};
 try{S=Object.assign(S,JSON.parse(localStorage.getItem("dpee")||"{}"))}catch(e){}
 if(S.cw.length)V["✨ Từ AI tạo"]=S.cw;rebuild();
 function save(){try{localStorage.setItem("dpee",JSON.stringify(S))}catch(e){}}
@@ -115,17 +128,72 @@ function done(){S.days[key()]=today()+1;save();head()}
 function streak(){var n=0,d=new Date();if(!S.days[key(d)])d.setDate(d.getDate()-1);while(S.days[key(d)]){n++;d.setDate(d.getDate()-1)}return n}
 function head(){$("streak").textContent="🔥 "+streak()+" ngày"}
 function speak(t){try{var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
-var tabs=[["🏠","Hôm nay"],["📚","Từ vựng"],["💬","Mẫu câu"],["✏️","Ngữ pháp"],["🎯","Luyện tập"],["🌐","Dịch"],["🤖","AI nói"]],cur=0,topic=Object.keys(V)[0],idx=0,flip=false,qi=0,score=0,answered=false;
+function T(r){return "<table>"+r.map(function(x){return "<tr><td>"+x.join("</td><td>")+"</td></tr>"}).join("")+"</table>"}
+function F(x){return "<div class='formula'>"+x+"</div>"}
+var NG=[
+{s:"Du lịch",t:"🧭 Hỏi đường và chỉ đường",b:F("Excuse me, how do I get to + nơi?<br>Is there a + nơi + near here?<br>Where is + nơi?")+T([["Go straight","Đi thẳng"],["Turn left / right","Rẽ trái / phải"],["Cross the street","Băng qua đường"],["It’s on your left","Nó ở bên trái bạn"],["next to / opposite / between","cạnh / đối diện / giữa"]])+"<p>Hỏi thêm: Is it far? How long does it take to walk there?</p>"},
+{s:"Du lịch",t:"📍 Giới từ in / on / at",b:T([["<b>at</b>","giờ, nơi cụ thể","at 7 o’clock, at the airport"],["<b>on</b>","ngày, thứ, bề mặt","on Monday, on the table, on the bus"],["<b>in</b>","tháng, năm, thành phố, không gian kín","in May, in 2026, in Hanoi, in a taxi"]])+"<p>Mẹo: đi xe lớn (bus, train, plane) dùng <b>on</b>, xe nhỏ (car, taxi) dùng <b>in</b>.</p>"},
+{s:"Du lịch",t:"🏨 Đặt phòng, đặt vé",b:F("I’d like to book + a room / a ticket.<br>Do you have any + rooms available?<br>How much is it per night?")+T([["I have a reservation.","Tôi có đặt chỗ trước."],["Is breakfast included?","Có bao gồm bữa sáng không?"],["I’d like to check in / out.","Tôi muốn nhận / trả phòng."],["Can I pay by card?","Tôi trả bằng thẻ được không?"]])},
+{s:"Du lịch",t:"✈️ Ở sân bay và di chuyển",b:F("What time does + the flight / the bus + leave / arrive?<br>How long does it take to get to + nơi?")+T([["Where is the check-in counter?","Quầy làm thủ tục ở đâu?"],["Which gate is it?","Cổng nào vậy?"],["My flight is delayed / cancelled.","Chuyến bay bị hoãn / hủy."],["I’d like a window / an aisle seat.","Tôi muốn ghế cạnh cửa sổ / lối đi."],["My luggage is missing.","Hành lý của tôi bị thất lạc."]])},
+{s:"Du lịch",t:"🍽️ Nhà hàng: gọi món",b:F("I’ll have + món.<br>I’d like + món, please.<br>Could we have + the menu / the bill?")+T([["What do you recommend?","Bạn gợi ý món nào?"],["I’m allergic to + chất","Tôi dị ứng với…"],["No spicy, please.","Đừng cay nhé."],["Can I get this to go?","Cho tôi mang đi được không?"]])+"<p>Nhân viên chúc: Enjoy your meal! → Thank you, you too.</p>"},
+{s:"Du lịch",t:"🛍️ Mua sắm và trả giá",b:F("How much is / are + vật?<br>Do you have this in a smaller / larger size?<br>It’s too + tính từ. / It’s not + tính từ + enough.")+T([["It’s too expensive.","Đắt quá."],["Can you give me a discount?","Giảm giá cho tôi được không?"],["Do you have a cheaper one?","Có cái rẻ hơn không?"],["I’ll take it.","Tôi lấy cái này."],["I’m just looking, thanks.","Tôi chỉ xem thôi, cảm ơn."]])},
+{s:"Du lịch",t:"🙏 Nhờ giúp và xin phép lịch sự",b:T([["Can I…?","thân mật"],["Could I…?","lịch sự hơn"],["May I…?","rất lịch sự, trang trọng"]])+F("Would you mind + V-ing? → Would you mind opening the window?<br>Do you mind if I + V? → Do you mind if I sit here?")+"<p>Trả lời đồng ý: <b>Not at all.</b> (Không phiền chút nào). Từ chối: Sorry, it’s taken.</p>"},
+{s:"Du lịch",t:"❓ Câu hỏi lịch sự (hỏi gián tiếp)",b:F("Could you tell me + where / what / how + chủ ngữ + động từ?")+"<p>Where is the station? → Could you tell me where the station is?</p><p>What time does it open? → Do you know what time it opens?</p><p>Lưu ý: sau từ hỏi, <b>không đảo</b> trợ động từ. Sai: where is the station. Đúng: where the station is.</p>"},
+{s:"Du lịch",t:"🚑 Khi gặp sự cố",b:T([["I have a headache / fever.","Tôi bị đau đầu / sốt."],["My phone is broken / stolen.","Điện thoại hỏng / bị lấy cắp."],["I’ve lost my passport.","Tôi làm mất hộ chiếu."],["I need to see a doctor.","Tôi cần gặp bác sĩ."],["Can you call a taxi / the police?","Gọi taxi / công an giúp tôi?"],["I don’t feel well.","Tôi thấy không khỏe."]])+F("I’ve lost + vật (đã mất, bây giờ vẫn chưa có lại)")},
+{s:"Du lịch",t:"🤝 Xin lỗi, cảm ơn, đồng ý, từ chối",b:T([["Thank you so much.","Cảm ơn nhiều."],["You’re welcome. / No problem.","Không có gì."],["I’m sorry. / Sorry for being late.","Xin lỗi / xin lỗi vì đến trễ."],["Pardon? / Sorry, could you repeat that?","Bạn nói lại được không?"],["Sure. / Of course.","Được chứ."],["I’m afraid I can’t. / Maybe next time.","Rất tiếc tôi không thể. / Để lần sau."]])+F("Thanks for + V-ing / danh từ<br>Sorry for + V-ing / danh từ")},
+{s:"Cuộc sống",t:"⏳ Hiện tại hoàn thành (kinh nghiệm)",b:F("have / has + V3 (quá khứ phân từ)")+"<p>Have you ever been to Da Nang? → Yes, I have. / No, I haven’t.<br>I have lived here for five years.<br>I haven’t eaten yet. · She has just left.</p>"+T([["be","been"],["go","gone / been"],["see","seen"],["eat","eaten"],["do","done"],["buy","bought"]])+"<p>Có mốc thời gian cụ thể → quá khứ đơn: I went there in 2024.</p>"},
+{s:"Cuộc sống",t:"📊 So sánh hơn và so sánh nhất",b:T([["cheap","cheaper","the cheapest"],["big","bigger","the biggest"],["expensive","more expensive","the most expensive"],["good","better","the best"],["bad","worse","the worst"]])+F("A + is + so sánh hơn + than + B<br>as + tính từ + as (bằng nhau)")+"<p>This hotel is cheaper than that one. · This is as big as that.</p>"},
+{s:"Cuộc sống",t:"☔ Câu điều kiện loại 1",b:F("If + hiện tại đơn, will + V")+"<p>If it rains, I will stay at home.<br>If you need help, call me.<br>What will you do if you miss the bus?</p><p><b>unless</b> = if not: Unless you hurry, you will be late.</p>"},
+{s:"Cuộc sống",t:"🧮 Some, any, much, many, a lot of",b:T([["a / an","đếm được số ít","a ticket"],["some","câu khẳng định","I want some water."],["any","phủ định, nghi vấn","Do you have any rooms?"],["many","đếm được số nhiều","How many tickets?"],["much","không đếm được","How much water?"],["a lot of","cả hai loại","a lot of money"]])+"<p>Không đếm được: water, rice, money, time, information, luggage.</p>"},
+{s:"Cuộc sống",t:"👤 Đại từ và tính từ sở hữu",b:T([["I","me","my","mine"],["you","you","your","yours"],["he","him","his","his"],["she","her","her","hers"],["we","us","our","ours"],["they","them","their","theirs"]])+"<p>This is my bag. It’s mine. · Can you help me? · That is her phone.</p>"},
+{s:"Cuộc sống",t:"🔁 Trạng từ tần suất",b:T([["always","luôn luôn (100%)"],["usually","thường"],["often","hay"],["sometimes","thỉnh thoảng"],["rarely","hiếm khi"],["never","không bao giờ (0%)"]])+F("sau <b>to be</b>, trước <b>động từ thường</b>")+"<p>I am always late. · I usually walk to work.<br>How often do you travel? → Twice a year.</p>"},
+{s:"Cuộc sống",t:"❤️ Nói về sở thích và mong muốn",b:F("like / love / enjoy + V-ing<br>would like + to V<br>be good at / interested in + V-ing")+"<p>I enjoy cooking. · I’m good at swimming.<br>I’d like to visit Hue. · I’m looking forward to meeting you.</p>"},
+{s:"Cuộc sống",t:"💡 Lời khuyên: should, had better",b:T([["You <b>should</b> see a doctor.","Bạn nên đi khám."],["You <b>shouldn’t</b> eat too much.","Bạn không nên ăn quá nhiều."],["You’d better take an umbrella.","Tốt hơn là mang ô (kẻo bị ướt)."],["Why don’t you / How about + V-ing?","Sao bạn không… / … thì sao?"],["If I were you, I would + V","Nếu tôi là bạn, tôi sẽ…"]])},
+{s:"Cuộc sống",t:"🎬 Quá khứ tiếp diễn: when / while",b:F("was / were + V-ing")+"<p>I was sleeping when you called.<br>While I was walking, it started to rain.</p><p>I / he / she / it → <b>was</b>. You / we / they → <b>were</b>.</p>"},
+{s:"Cuộc sống",t:"🔗 Nối ý: and, but, because, so, although",b:T([["and","và"],["but","nhưng"],["or","hoặc"],["because + nguyên nhân","bởi vì"],["so + kết quả","nên"],["although + mệnh đề","mặc dù"]])+"<p>I was tired, so I went to bed early.<br>I stayed home because it was raining.<br>Although it was expensive, I bought it.</p>"},
+{s:"Cuộc sống",t:"🗓️ Nói về kế hoạch: will, going to, hiện tại tiếp diễn",b:T([["I’m meeting my friend tomorrow.","hẹn sẵn, đã sắp xếp"],["I’m going to travel to Hanoi next month.","dự định"],["I’ll call a taxi.","quyết định ngay lúc nói"]])+"<p>Rủ rê: Let’s go! · Shall we have lunch? · Why don’t we take a taxi?</p>"},
+{s:"Cuộc sống",t:"⚖️ too, enough, so, such",b:T([["too + adj","quá (nên không thể)","It’s too hot to go out."],["adj + enough","đủ","The room is big enough."],["so + adj","rất","It’s so beautiful!"],["such a + adj + noun","thật là","It’s such a nice place."]])},
+{s:"Cuộc sống",t:"🕰️ Used to: thói quen trong quá khứ",b:F("used to + V (trước đây từng)<br>get used to + V-ing (quen với)")+"<p>I used to live in Hanoi.<br>Did you use to play football?<br>I’m getting used to the weather here.</p>"},
+{s:"Cuộc sống",t:"📩 Câu bị động cơ bản",b:F("is / are / was / were + V3")+"<p>English is spoken here.<br>My bag was stolen yesterday.<br>The flight was cancelled.</p><p>Dùng khi không cần nói ai làm, hoặc quan tâm đến sự việc hơn người làm.</p>"},
+{s:"Cuộc sống",t:"🔢 Hỏi giá, số lượng, thời gian",b:T([["How much","bao nhiêu tiền / lượng","How much is it?"],["How many","bao nhiêu (đếm được)","How many people?"],["How long","bao lâu","How long does it take?"],["How often","bao lâu một lần","How often do you go?"],["What time","mấy giờ","What time is it?"],["How far","bao xa","How far is it?"]])}
+];
+G=G.concat(NG);
+Q=Q.concat([
+["___ you ever been to Japan?",["Did","Have","Are"],1,"Hỏi kinh nghiệm dùng Have you ever + V3."],
+["This hotel is ___ than that one.",["cheap","cheaper","cheapest"],1,"So sánh hơn: cheaper + than."],
+["If it rains tomorrow, I ___ stay home.",["will","would","am"],0,"Điều kiện loại 1: If + hiện tại, will + V."],
+["How ___ water do you want?",["many","much","a"],1,"Water không đếm được nên dùng much."],
+["Do you have ___ rooms available?",["some","any","a"],1,"Câu hỏi dùng any."],
+["Would you mind ___ the window?",["open","to open","opening"],2,"Would you mind + V-ing."],
+["Could you tell me where ___?",["is the station","the station is","station is"],1,"Hỏi gián tiếp không đảo: where the station is."],
+["The meeting is ___ Monday.",["in","at","on"],2,"Thứ trong tuần dùng on."],
+["I’ll meet you ___ 7 o’clock.",["on","at","in"],1,"Giờ cụ thể dùng at."],
+["You ___ see a doctor. (lời khuyên)",["should","shouldn’t","can’t"],0,"should + V dùng để khuyên."],
+["I was sleeping ___ you called.",["when","while","because"],0,"Hành động xen vào dùng when."],
+["I like ___ to music.",["listen","listening","to listening"],1,"like + V-ing."],
+["It’s ___ hot to go outside.",["too","enough","such"],0,"too + adj = quá… (không thể)."],
+["I ___ live in Hue when I was a child.",["use to","used to","using to"],1,"used to + V: thói quen trong quá khứ."],
+["My bag ___ stolen yesterday.",["is","was","were"],1,"Bị động quá khứ số ít: was + V3."],
+["I’d like ___ a table for two.",["book","to book","booking"],1,"would like + to V."],
+["I stayed home ___ it was raining.",["because","so","but"],0,"because + nguyên nhân."],
+["This is my bag. It’s ___.",["my","mine","me"],1,"mine = của tôi (đứng một mình)."]
+]);
+var gsec="Nền tảng";
+function gram(){var secs=["Nền tảng","Du lịch","Cuộc sống"];
+var h="<div class='chips'>"+secs.map(function(s){var n=G.filter(function(g){return (g.s||"Nền tảng")==s}).length;return "<button class='chip "+(s==gsec?"on":"")+"' onclick='gsec=\""+s+"\";gram()'>"+s+" ("+n+")</button>"}).join("")+"</div>";
+h+=G.map(function(g,i){return (g.s||"Nền tảng")==gsec?"<div class='card les'><div class='lh'><h3>"+g.t+"</h3><button class='bm' onclick='tg("+i+")'>"+(S.savedG[i]?"⭐ Đã lưu":"☆ Lưu")+"</button></div>"+g.b+"</div>":""}).join("");
+$("view").innerHTML=h}
+var tabs=[["🏠","Hôm nay"],["📚","Từ vựng"],["💬","Mẫu câu"],["✏️","Ngữ pháp"],["🗺️","Bài học"],["🌐","Dịch"],["🤖","AI nói"]],cur=0,topic=Object.keys(V)[0],idx=0,flip=false,qi=0,score=0,answered=false;
 function nav(){$("nav").innerHTML=tabs.map(function(t,i){return "<button class='"+(i==cur?"on":"")+"' onclick='go("+i+")'><b>"+t[0]+"</b>"+t[1]+"</button>"}).join("")}
-function go(i){if(i==1&&cur==1)vmode="list";cur=i;render();window.scrollTo(0,0)}
-function render(){nav();head();[home,vocab,phr,gram,quiz,trans,chat,saved][cur]()}
+function go(i){if(i==1&&cur==1)vmode="list";if(i==4&&cur==4)LS=null;cur=i;render();window.scrollTo(0,0)}
+function render(){nav();head();[home,vocab,phr,gram,lessonTab,trans,chat,saved][cur]()}
 function dayWords(){var k=key();if(S.dl.d!=k){var pool=ALL.filter(function(w){return !S.known[w[0]]});if(pool.length<5)pool=ALL.slice();var o=[];for(var i=0;i<5;i++)o.push(pool[(S.ptr+i)%pool.length][0]);S.ptr=(S.ptr+5)%pool.length;S.dl={d:k,w:o};save()}return S.dl.w.map(function(e){return ALL.find(function(w){return w[0]==e})}).filter(Boolean)}
 function due(){if(!S.rem.on||today())return false;var n=new Date(),p=S.rem.time.split(":");return n.getHours()*60+n.getMinutes()>=+p[0]*60+ +p[1]}
 function home(){
 var g=["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"][new Date().getDay()],dw=dayWords(),t=Math.min(today(),5);
 var h=due()?"<div class='banner'>⏰ Đến giờ học rồi! Hôm nay bạn chưa học bài nào. Chỉ cần 10 phút thôi nhé.</div>":"";
 h+="<div class='card'><h3>Chào Devlin 👋</h3><div class='mu'>"+g+", "+key()+"</div><p style='margin:10px 0 0'>Mục tiêu hôm nay: hoàn thành 5 hoạt động (đánh dấu từ, làm câu hỏi).</p><div class='bar'><i style='width:"+t*20+"%'></i></div><div class='hint'>"+t+"/5 hoạt động · chuỗi "+streak()+" ngày liên tiếp</div>"+week()+"</div>";
-h+="<h2>🌟 5 từ mới hôm nay</h2><div class='hint' style='margin:-4px 2px 8px'>Kho từ: "+ALL.length+" từ · đã nhớ "+Object.keys(S.known).length+"</div><div class='card'>"+dw.map(function(w){return "<div class='sv'><div><b>"+w[0]+"</b> · <span style='color:var(--ac)'>"+w[1]+"</span><div class='ex'>"+w[2]+"</div></div><div class='row' style='flex:none;flex-wrap:nowrap'><button class='bm' onclick='speak(\""+(w[2]||w[0]).replace(/"/g,"")+"\")'>🔊</button><button class='bm' onclick='tog(\""+w[0]+"\")'>"+(S.saved[w[0]]?"⭐":"☆")+"</button></div></div>"}).join("")+"</div>";
+h+=nextCard();h+="<h2>🌟 5 từ mới hôm nay</h2><div class='hint' style='margin:-4px 2px 8px'>Kho từ: "+ALL.length+" từ · đã nhớ "+Object.keys(S.known).length+"</div><div class='card'>"+dw.map(function(w){return "<div class='sv'><div><b>"+w[0]+"</b> · <span style='color:var(--ac)'>"+w[1]+"</span><div class='ex'>"+w[2]+"</div></div><div class='row' style='flex:none;flex-wrap:nowrap'><button class='bm' onclick='speak(\""+(w[2]||w[0]).replace(/"/g,"")+"\")'>🔊</button><button class='bm' onclick='tog(\""+w[0]+"\")'>"+(S.saved[w[0]]?"⭐":"☆")+"</button></div></div>"}).join("")+"</div>";
 h+="<h2>⏰ Nhắc học hàng ngày</h2><div class='card'><div class='row' style='align-items:center'><label><input type='checkbox' id='ron' "+(S.rem.on?"checked":"")+" onchange='setRem()'> Bật nhắc nhở</label><input type='time' id='rt' value='"+S.rem.time+"' onchange='setRem()'></div><p class='hint' style='margin:8px 0 0'>Trình duyệt sẽ gửi thông báo vào giờ bạn chọn nếu bạn chưa học, khi trang này đang mở (tab nền cũng được). Trang web không thể tự bật khi bạn đã đóng hẳn, nên hãy ghim tab hoặc thêm vào màn hình chính.</p><div class='hint' id='rs'></div></div>";
 $("view").innerHTML=h;rstat()}
 function week(){var h="<div class='dots'>",d=new Date();d.setDate(d.getDate()-6);for(var i=0;i<7;i++){h+="<span class='"+(S.days[key(d)]?"d":"")+"'>"+["CN","T2","T3","T4","T5","T6","T7"][d.getDay()]+"</span>";d.setDate(d.getDate()+1)}return h+"</div>"}
@@ -153,7 +221,6 @@ function setT(k){topic=k;idx=0;flip=false;vmode="card";vocab()}
 function fl(){flip=!flip;vocab();if(flip)sp()}
 function sp(){var w=V[topic][idx];speak(flip&&w[2]?w[2]:w[0])}
 function mark(k){var w=V[topic][idx];if(k)S.known[w[0]]=1;else delete S.known[w[0]];done();idx=(idx+1)%V[topic].length;flip=false;vocab()}
-function gram(){$("view").innerHTML=G.map(function(g,i){return "<div class='card les'><div class='lh'><h3>"+g.t+"</h3><button class='bm' onclick='tg("+i+")'>"+(S.savedG[i]?"⭐ Đã lưu":"☆ Lưu")+"</button></div>"+g.b+"</div>"}).join("")}
 function tg(i){if(S.savedG[i])delete S.savedG[i];else{S.savedG[i]=1;done()}save();gram()}
 function quiz(){
 if(qi>=Q.length){var p=score/Q.length;$("view").innerHTML="<div class='card' style='text-align:center'><div class='big'>"+score+"/"+Q.length+"</div><p>"+(p>=.8?"Tuyệt vời! Bạn nắm khá chắc rồi 🎉":p>=.5?"Khá tốt! Xem lại bài Ngữ pháp rồi làm lại nhé.":"Đừng lo, đọc lại Ngữ pháp và thử lần nữa nhé 💪")+"</p><button class='btn p' style='width:100%' onclick='qi=0;score=0;quiz()'>Làm lại</button></div>";return}
@@ -171,7 +238,19 @@ h+="<h2>🌐 Sổ từ đã dịch ("+S.tr.length+")</h2><div class='card'>"+(S.
 $("view").innerHTML=h}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]})}
 var NA="<div class='card'>Tính năng AI chưa sẵn sàng. Hãy mở trang này trong Claude và cho phép khi được hỏi.</div>";
+async function viaSample(sm,b){
+try{
+if(b.mode=="translate")return await sm.json("Bạn là từ điển Anh-Việt cho người mới học. Dịch "+(b.dir=="vi"?"từ hoặc câu tiếng Việt sang tiếng Anh":"từ hoặc câu tiếng Anh sang tiếng Việt")+". Chỉ trả về JSON với các khóa: en, vi, ipa (cách đọc bồi cho người Việt, ví dụ: ơ-bao), note (1-2 câu tiếng Việt giải thích cách dùng), example (1 câu ví dụ tiếng Anh đơn giản), example_vi.\n\nCần dịch: "+b.text,{cache:false});
+if(b.mode=="words")return await sm.json("Tạo 10 từ tiếng Anh thông dụng, dễ (A1-A2) theo chủ đề: "+b.text+". Không dùng các từ: "+(b.exclude||[]).slice(0,100).join(", ")+". Chỉ trả về JSON dạng {\"words\":[[\"từ\",\"nghĩa tiếng Việt\",\"câu ví dụ tiếng Anh\",\"nghĩa câu ví dụ\"]]}",{cache:false});
+var role=["bạn thân thiện làm quen và nói chuyện hàng ngày","đồng nghiệp trao đổi công việc","nhân viên nhà hàng","người qua đường ở thành phố","nhà tuyển dụng phỏng vấn xin việc cơ bản"][b.scenario]||"bạn thân thiện";
+var ins="Bạn là gia sư tiếng Anh thân thiện cho người Việt mới học (A1-A2). Đóng vai "+role+". Quy tắc: 1) Trả lời bằng tiếng Anh rất đơn giản, tối đa 2 câu, kết thúc bằng một câu hỏi để người học nói tiếp. 2) Xuống dòng, viết biểu tượng 💡 rồi bằng tiếng Việt: nếu người học sai ngữ pháp hoặc từ vựng thì đưa câu đúng và giải thích ngắn; nếu đúng thì khen ngắn và gợi ý cách nói tự nhiên hơn. Nếu người học viết tiếng Việt, hãy dịch sang tiếng Anh cho họ nói theo. Không dùng markdown. Hãy bắt đầu cuộc hội thoại.";
+var inp=[{role:"user",content:ins},{role:"assistant",content:b.starter||"Hi!"}];
+(b.history||[]).slice(-10).forEach(function(m){inp.push({role:m.r=="user"?"user":"assistant",content:m.t})});
+inp.push({role:"user",content:b.text});
+var r=await sm(inp,{cache:false});return {text:r.text}
+}catch(e){throw e&&e.code?e:{code:"error"}}}
 async function api(body){
+if(window.claude&&claude.use){var sm=null;try{sm=await claude.use("sample")}catch(e){}if(sm)return await viaSample(sm,body)}
 for(var n=0;n<2;n++){
 var code="";try{code=localStorage.getItem("dpee_code")||""}catch(e){}
 var res=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json","x-access-code":code},body:JSON.stringify(body)});
@@ -180,7 +259,7 @@ if(res.status==429)throw {code:"rate_limited"};
 if(res.status==404||res.status==405)throw {code:"nofn"};
 if(!res.ok){var d="";try{d=(await res.json()).detail||""}catch(e){}throw {code:"error",detail:d}}
 return await res.json()}}
-function errText(e){return e&&e.code=="auth"?"Mã truy cập chưa đúng, hãy thử lại.":e&&e.code=="rate_limited"?"Bạn dùng hơi nhanh hoặc đã hết lượt hôm nay, thử lại sau nhé.":e&&e.code=="nofn"?"Không tìm thấy /api/ai. Hãy dùng link Vercel (không phải GitHub Pages) và kiểm tra file api/ai.js nằm đúng thư mục api.":"Có lỗi khi gọi AI"+(e&&e.detail?": "+e.detail:", bạn thử lại nhé.")}
+function errText(e){return e&&e.code=="not_granted"?"Bạn đã từ chối quyền dùng AI. Tải lại trang để cho phép.":e&&e.code=="auth"?"Mã truy cập chưa đúng, hãy thử lại.":e&&e.code=="rate_limited"?"Bạn dùng hơi nhanh hoặc đã hết lượt hôm nay, thử lại sau nhé.":e&&e.code=="nofn"?"Không tìm thấy /api/ai. Hãy dùng link Vercel (không phải GitHub Pages) và kiểm tra file api/ai.js nằm đúng thư mục api.":"Có lỗi khi gọi AI"+(e&&e.detail?": "+e.detail:", bạn thử lại nhé.")}
 function aiErr(e){return "<div class='card'>"+errText(e)+"</div>"}
 var dir="en",lastTr=null,busy=false,tv="";
 function trans(){
@@ -214,6 +293,36 @@ function vlist(){
 var dk=Object.keys(DOCV),ks=Object.keys(V),base=ks.filter(function(k){return dk.indexOf(k)<0}),doc=ks.filter(function(k){return dk.indexOf(k)>=0});
 function t(k){var L=V[k],n=L.filter(function(w){return S.known[w[0]]}).length;return "<button class='tile' data-k='"+k+"' onclick='setT(this.getAttribute(\"data-k\"))'><b>"+k+"</b><span>"+n+"/"+L.length+" từ</span><i style='width:"+(L.length?n/L.length*100:0)+"%'></i></button>"}
 $("view").innerHTML="<div class='hint' style='margin-bottom:4px'>Chọn một chủ đề để học ("+ks.length+" chủ đề, "+ALL.length+" từ)</div><h2>Từ cơ bản</h2><div class='grid'>"+base.map(t).join("")+"</div><h2>Theo tài liệu của bạn</h2><div class='grid'>"+doc.map(t).join("")+"</div>"+aibox()}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function addDays(n){var d=new Date();d.setDate(d.getDate()+n);return key(d)}
+function lessons(){var L=[];Object.keys(V).forEach(function(k){var w=V[k];for(var i=0;i<w.length;i+=6){var c=w.slice(i,i+6);if(c.length<3&&L.length&&L[L.length-1].t==k){L[L.length-1].w=L[L.length-1].w.concat(c);continue}L.push({id:k+"#"+(i/6+1),t:k,n:i/6+1,w:c})}});return L}
+function curIdx(L){for(var i=0;i<L.length;i++)if(!S.lp[L[i].id])return i;return -1}
+function nextCard(){var L=lessons(),i=curIdx(L),due=L.filter(function(l){var p=S.lp[l.id];return p&&p.due<=key()}).length;
+return "<div class='card'><div class='hint'>🗺️ Bài học tiếp theo</div>"+(i>=0?"<h3>Bài "+(i+1)+": "+L[i].t+" ("+L[i].n+")</h3><div class='ex'>"+L[i].w.map(function(w){return w[0]}).join(", ")+"</div><div class='row' style='margin-top:10px'><button class='btn p' onclick='cur=4;nav();startL("+i+",\"learn\")'>Học bài này →</button>"+(due?"<button class='btn' onclick='go(4)'>🔁 Ôn lại ("+due+")</button>":"")+"</div>":"<p>Bạn đã hoàn thành mọi bài hiện có 🎉 Hãy bấm “✨ Cần thêm từ?” ở tab Từ vựng để có bài mới.</p>")+"</div>"}
+var LS=null;
+function lessonTab(){if(LS)return lsView();
+var L=lessons(),i=curIdx(L),done=L.filter(function(l){return S.lp[l.id]}).length,due=[];L.forEach(function(l,j){var p=S.lp[l.id];if(p&&p.due<=key())due.push(j)});
+var h="<div class='card'><h3>🗺️ Lộ trình học</h3><div class='hint'>Hoàn thành "+done+"/"+L.length+" bài. Mọi bài đã mở. Học xong và ôn đạt, trang tự chuyển sang bài sau.</div><div class='bar'><i style='width:"+done/L.length*100+"%'></i></div></div>"+nextCard();
+if(due.length)h+="<h2>🔁 Cần ôn lại ("+due.length+")</h2><div class='card'>"+due.slice(0,6).map(function(j){return "<div class='sv'><div><b>Bài "+(j+1)+"</b> · "+L[j].t+"</div><button class='bm' onclick='startL("+j+",\"review\")'>Ôn</button></div>"}).join("")+"</div>";
+var gs={},order=[];L.forEach(function(l,j){if(!gs[l.t]){gs[l.t]=[];order.push(l.t)}gs[l.t].push(j)});
+h+="<h2>📋 Tất cả bài (đã mở hết)</h2>"+order.map(function(t){var js=gs[t],dn=js.filter(function(j){return S.lp[L[j].id]}).length;return "<details class='tp'"+(js.indexOf(i)>=0?" open":"")+"><summary><span>"+t+"</span><span class='hint'>"+dn+"/"+js.length+" bài</span></summary>"+js.map(function(j){var l=L[j],p=S.lp[l.id];return "<div class='sv'><div>"+(p?"✅":j==i?"▶️":"○")+" Bài "+(j+1)+(p?"<div class='hint'>Điểm "+p.s+"/"+l.w.length+" · ôn lại "+p.due+"</div>":"")+"</div><button class='bm' onclick='startL("+j+",\""+(p?"review":"learn")+"\")'>"+(p?"Ôn":"Học")+"</button></div>"}).join("")+"</details>"}).join("")+"<div class='row' style='margin-top:10px'><button class='btn' onclick='quiz()'>✏️ Luyện ngữ pháp (trắc nghiệm)</button></div>";
+$("view").innerHTML=h}
+function startL(i,mode){var L=lessons();LS={i:i,mode:mode,l:L[i],phase:mode=="learn"?"learn":"quiz"};if(LS.phase=="quiz")mkQ();lsView();window.scrollTo(0,0)}
+function mkQ(){var ws=shuf(LS.l.w);LS.qs=ws.map(function(w,i){var ty=i%3,pool=shuf(ALL.filter(function(x){return x[0]!=w[0]&&x[1]!=w[1]})).slice(0,3);var o=ty==0?pool.map(function(x){return x[1]}).concat(w[1]):pool.map(function(x){return x[0]}).concat(w[0]);return {w:w,ty:ty,opts:shuf(o),ans:ty==0?w[1]:w[0]}});LS.qi=0;LS.score=0;LS.ans=false}
+function lsView(){var l=LS.l,L=lessons(),no=L.findIndex(function(x){return x.id==l.id})+1;
+var back="<button class='bm' onclick='LS=null;lessonTab()'>← Lộ trình</button>";
+if(LS.phase=="learn"){$("view").innerHTML="<div class='card'>"+back+"<h3 style='margin-top:10px'>Bài "+no+": "+l.t+" ("+l.n+")</h3><div class='hint'>Đọc và nghe từng từ, sau đó làm bài ôn tập.</div>"+l.w.map(function(w,j){return "<div class='sv'><div><b>"+w[0]+"</b>"+(w[4]?" <span class='ex'>/"+w[4]+"/</span>":"")+" · <span style='color:var(--ac)'>"+w[1]+"</span>"+(w[2]?"<div class='ex'>"+w[2]+(w[3]?" · "+w[3]:"")+"</div>":"")+"</div><button class='bm' onclick='speak(LS.l.w["+j+"][0])'>🔊</button></div>"}).join("")+"<button class='btn p' style='width:100%;margin-top:12px' onclick='LS.phase=\"quiz\";mkQ();lsView()'>Ôn tập ngay →</button></div>";return}
+if(LS.qi>=LS.qs.length)return lsResult(no);
+var q=LS.qs[LS.qi];LS.ans=false;
+var t=q.ty==0?"Nghĩa của “"+q.w[0]+"” là gì?":q.ty==1?"Chọn từ tiếng Anh có nghĩa: “"+q.w[1]+"”":"🎧 Nghe và chọn từ bạn nghe được";
+$("view").innerHTML="<div class='hint'>"+back+" Câu "+(LS.qi+1)+"/"+LS.qs.length+" · Điểm "+LS.score+"</div><div class='bar'><i style='width:"+LS.qi/LS.qs.length*100+"%'></i></div><div class='card'><div style='font-size:21px;font-weight:800;margin-bottom:8px'>"+t+"</div>"+(q.ty!=1?"<button class='bm' onclick='speak(LS.qs[LS.qi].w[0])'>🔊 Nghe</button>":"")+q.opts.map(function(o,i){return "<button class='opt' onclick='lsAns("+i+")'>"+o+"</button>"}).join("")+"<div class='fb' id='fb'></div></div>"}
+function lsAns(i){if(LS.ans)return;LS.ans=true;done();var q=LS.qs[LS.qi],ci=q.opts.indexOf(q.ans),b=document.querySelectorAll(".opt");if(b[ci])b[ci].classList.add("ok");var ok=i==ci;if(ok)LS.score++;else if(b[i])b[i].classList.add("bad");
+$("fb").innerHTML=(ok?"✅ Chính xác! ":"❌ Chưa đúng. ")+"<b>"+q.w[0]+"</b> = "+q.w[1]+"<div style='margin-top:10px'><button class='btn p' style='width:100%' onclick='LS.qi++;lsView()'>"+(LS.qi==LS.qs.length-1?"Xem kết quả":"Câu tiếp theo →")+"</button></div>"}
+function lsResult(no){var n=LS.qs.length,pass=LS.score>=Math.ceil(n*.67),l=LS.l,L=lessons(),h="<div class='card' style='text-align:center'><div class='big'>"+LS.score+"/"+n+"</div>";
+if(pass){var p=S.lp[l.id],st=LS.mode=="review"&&p?Math.min((p.st||0)+1,3):0;S.lp[l.id]={s:LS.score,st:st,due:addDays([1,3,7,14][st])};l.w.forEach(function(w){S.known[w[0]]=1});save();var nx=LS.i+1<L.length?LS.i+1:-1;LS.pend=nx>=0;var idc=l.id;if(nx>=0)setTimeout(function(){if(LS&&LS.pend&&LS.l.id==idc)startL(nx,"learn")},4000);
+h+="<p>🎉 "+(LS.mode=="review"?"Ôn tập tốt!":"Hoàn thành bài "+no+"!")+" Hẹn ôn lại ngày "+S.lp[l.id].due+".</p>"+(nx>=0?"<div class='hint' id='cd'>Tự chuyển sang bài sau trong 4 giây…</div><button class='btn p' style='width:100%;margin-top:6px' onclick='startL("+nx+",\"learn\")'>Sang Bài "+(nx+1)+" ngay →</button><button class='btn' style='width:100%;margin-top:8px' onclick='LS.pend=false;$(\"cd\").textContent=\"Đã dừng tự chuyển.\"'>Ở lại bài này</button>":"<p>Bạn đã học hết các bài hiện có!</p>")}
+else h+="<p>Chưa đạt, cần đúng ít nhất "+Math.ceil(n*.67)+"/"+n+". Đừng lo, học lại một lượt rồi thử nữa nhé 💪</p><button class='btn p' style='width:100%' onclick='LS.phase=\"learn\";lsView()'>Học lại bài</button><button class='btn' style='width:100%;margin-top:8px' onclick='mkQ();lsView()'>Làm lại phần ôn tập</button>";
+$("view").innerHTML=h+"<button class='btn' style='width:100%;margin-top:8px' onclick='LS=null;lessonTab()'>Về lộ trình</button></div>"}
 var PHL=[];Object.keys(PH).forEach(function(k){PH[k].forEach(function(p){PHL.push([k,p[0],p[1]])})});
 var pt=Object.keys(PH)[0],pq="";
 function phr(){
